@@ -19,8 +19,12 @@ import java.util.Set;
  */
 
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
+    public UserDetailsServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
 
     /**
@@ -37,6 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getFio(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

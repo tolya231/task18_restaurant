@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    //@Transactional !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+    @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         userDAO.save(user);
     }
-
+    @Override
     public User findByUsername(String username) {
         return userDAO.findByUsername(username);
     }

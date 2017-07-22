@@ -42,7 +42,7 @@ public class LoginController {
             return "registration";
         }
         userService.save(userForm);
-        securityService.autoLogin(userForm.getFio(), userForm.getConfirmPassword());
+        securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
         return "redirect:/welcome";
     }
 
