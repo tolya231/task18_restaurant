@@ -25,8 +25,43 @@
     </c:if>
 </div>
 
+<h1>Dish List</h1>
+
+<c:if test="${!empty getAllDishes}">
+    <table>
+        <tr>
+            <th width="100" align="center">Dish</th>
+            <th width="100" align="center">Price</th>
+            <th width="100" align="center">Make order</th>
+        </tr>
+        <c:forEach items="${getAllDishes}" var="dish">
+            <tr>
+                <td width="100" align="center">${dish.name}</td>
+                <td width="100" align="center">${dish.price}</td>
+                <td width="100" align="center"><a href="<c:url value='/add/${dish.id}'/>">order</a></td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
+<h1>Order List</h1>
 
 
+
+<%--<c:if test="${!empty orderList}">
+    <table>
+        <tr>
+            <th width="100" align="center">Dish</th>
+            <th width="100" align="center">Price</th>
+        </tr>
+        <c:forEach items="${orderList}" var="dish">
+            <tr>
+                <td width="100" align="center">${dish.name}</td>
+                <td width="100" align="center">${dish.price}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>--%>
 
 </body>
 </html>

@@ -6,14 +6,14 @@ import com.epam.service.SecurityService;
 import com.epam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
+
     private final UserService userService;
 
     private final SecurityService securityService;
@@ -34,6 +34,7 @@ public class LoginController {
 
     }
 
+    @Transactional
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
@@ -43,7 +44,7 @@ public class LoginController {
         }
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
-        return "redirect:/welcome";
+        return "redirect:/welcome"/* + userForm.getUsername()*/;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -57,11 +58,6 @@ public class LoginController {
         }
 
         return "login";
-    }
-
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public String welcome(Model model) {
-        return "welcome";
     }
 
 

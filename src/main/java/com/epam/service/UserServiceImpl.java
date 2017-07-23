@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
         this.roleDAO = roleDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -34,8 +35,28 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         userDAO.save(user);
     }
+
     @Override
     public User findByUsername(String username) {
         return userDAO.findByUsername(username);
     }
+
+    /*@Override
+    public String getRoleByUsername(String username) {
+        User user = userDAO.findByUsername(username);
+        if (hasRoleAdmin(user.getRoles())) {
+            return "ROLE_ADMIN";
+        } else
+            return "ROLE_CLIENT";
+
+    }
+
+    private boolean hasRoleAdmin(Set<Role> roles) {
+        for (Role role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+        return false;
+    }*/
 }
