@@ -46,9 +46,7 @@
 
 <h1>Order List</h1>
 
-
-
-<%--<c:if test="${!empty orderList}">
+<c:if test="${!empty orderList}">
     <table>
         <tr>
             <th width="100" align="center">Dish</th>
@@ -61,7 +59,7 @@
             </tr>
         </c:forEach>
     </table>
-</c:if>--%>
+</c:if>
 
 </body>
 </html>

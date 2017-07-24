@@ -20,12 +20,14 @@ public class User {
     @Transient
     private String confirmPassword;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Dish> dishes;
+    @OneToOne
+    @JoinColumn(name = "orders_id")
+    private Order order;
 
     @ManyToMany
     @JoinTable(name = "user_has_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles;
+
 
     public int getId() {
         return id;
@@ -67,11 +69,11 @@ public class User {
         this.roles = roles;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setDishes(Set<Dish> dishes) {
-        this.dishes = dishes;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

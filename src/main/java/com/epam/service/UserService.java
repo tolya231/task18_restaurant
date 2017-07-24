@@ -1,9 +1,8 @@
 package com.epam.service;
 
+import com.epam.model.Order;
 import com.epam.model.User;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
 
     void save(User user);
@@ -12,8 +11,9 @@ public interface UserService {
 
     //List<User> getAllUsers();
 
-    User findByUsername(String username);
+    Order getOrderByUsername(String username);
 
+    User findByUsername(String username);
 
     //String getRoleByUsername(String username);
 }

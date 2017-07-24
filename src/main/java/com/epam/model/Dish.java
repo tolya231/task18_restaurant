@@ -17,17 +17,10 @@ public class Dish {
     @Column(name = "price")
     private int price;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "orders_id")
+    private Order order;
 
     public int getId() {
         return id;
@@ -43,6 +36,14 @@ public class Dish {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getPrice() {

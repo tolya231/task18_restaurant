@@ -1,7 +1,9 @@
 package com.epam.service;
 
+import com.epam.dao.OrderDAO;
 import com.epam.dao.RoleDAO;
 import com.epam.dao.UserDAO;
+import com.epam.model.Order;
 import com.epam.model.Role;
 import com.epam.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private final RoleDAO roleDAO;
 
+    private final OrderDAO orderDAO;
+
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, OrderDAO orderDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.orderDAO = orderDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -34,6 +39,11 @@ public class UserServiceImpl implements UserService {
         roles.add(roleDAO.getOne(2));
         user.setRoles(roles);
         userDAO.save(user);
+    }
+
+    @Override
+    public Order getOrderByUsername(String username) {
+        return userDAO.findByUsername(username).getOrder();
     }
 
     @Override
