@@ -7,7 +7,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <style>
+        <%@include file='/WEB-INF/views/css/style.css' %>
+    </style>
     <title>Create an account</title>
 
 

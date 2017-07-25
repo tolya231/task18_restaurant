@@ -7,7 +7,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <style>
+        <%@include file='/WEB-INF/views/css/style.css' %>
+    </style>
     <title>Admin</title>
 
 </head>
@@ -24,10 +26,10 @@
                 onclick="document.forms['logoutForm'].submit()" style="color: green">Logout </a>
         </h2>
     </c:if>
+
+<a href="${pageContext.request.contextPath}/welcome">Go to client page</a>
+
+
 </div>
-
-
-
-
 </body>
 </html>

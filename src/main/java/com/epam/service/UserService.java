@@ -15,5 +15,6 @@ public interface UserService {
 
     User findByUsername(String username);
 
+    boolean isAdmin(User user);
     //String getRoleByUsername(String username);
 }

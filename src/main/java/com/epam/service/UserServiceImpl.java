@@ -51,6 +51,12 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByUsername(username);
     }
 
+    @Override
+    public boolean isAdmin(User user) {
+        Set<Role> roles = user.getRoles();
+        return hasRoleAdmin(roles);
+    }
+
     /*@Override
     public String getRoleByUsername(String username) {
         User user = userDAO.findByUsername(username);
@@ -59,7 +65,7 @@ public class UserServiceImpl implements UserService {
         } else
             return "ROLE_CLIENT";
 
-    }
+    }*/
 
     private boolean hasRoleAdmin(Set<Role> roles) {
         for (Role role : roles) {
@@ -68,5 +74,5 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
-    }*/
+    }
 }

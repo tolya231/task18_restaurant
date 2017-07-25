@@ -7,7 +7,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="<c:url value="/WEB-INF/views/css/style.css" />" rel="stylesheet">
+    <style>
+        <%@include file='/WEB-INF/views/css/style.css' %>
+    </style>
     <title>Log in with your account</title>
 </head>
 

@@ -1,7 +1,6 @@
 <html>
 <body>
-<h2>Hello!</h2>
-<h3>Welcome to Restaurant service</h3>
-<a href="/login">Start using</a>
+<h3>Hello! Welcome to restaurant service</h3>
+<a href="/login">Start</a>
 </body>
 </html>

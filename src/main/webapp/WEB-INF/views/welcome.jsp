@@ -6,7 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <style>
+        <%@include file='/WEB-INF/views/css/style.css' %>
+    </style>
+    <%--<link href="<c:url value="/WEB-INF/views/css/style.css" />" rel="stylesheet">--%>
     <title>Welcome</title>
 
 </head>
@@ -23,7 +26,10 @@
                 onclick="document.forms['logoutForm'].submit()" style="color: green">Logout </a>
         </h2>
     </c:if>
-</div>
+
+<c:if test="${isAdmin}">
+    <a href="${pageContext.request.contextPath}/admin">Go to admin page</a>
+</c:if>
 
 <h1>Dish List</h1>
 
@@ -61,5 +67,8 @@
     </table>
 </c:if>
 
+<p>Don't forget to pay the order. Please wait for the bill.</p>
+
+</div>
 </body>
 </html>

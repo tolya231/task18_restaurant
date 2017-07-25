@@ -1,5 +1,6 @@
 package com.epam.controller;
 
+import com.epam.model.User;
 import com.epam.service.DishService;
 import com.epam.service.OrderService;
 import com.epam.service.UserService;
@@ -42,10 +43,11 @@ public class ClientController {
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        orderService.addOrderToUser(userService.findByUsername(name));
+        User user = userService.findByUsername(name);
+        orderService.addOrderToUser(user);
+        model.addAttribute("isAdmin", userService.isAdmin(user));
         model.addAttribute("getAllDishes", dishService.getAllDishes());
         model.addAttribute("orderList", orderService.getDishesList(userService.getOrderByUsername(name)));
-
         return "welcome";
     }
 
