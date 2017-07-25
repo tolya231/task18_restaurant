@@ -2,12 +2,14 @@ package com.epam.service;
 
 import com.epam.dao.DishDAO;
 import com.epam.dao.OrderDAO;
+import com.epam.dao.UserDAO;
 import com.epam.model.Dish;
 import com.epam.model.Order;
+import com.epam.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,26 +19,43 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
 
+    private final UserDAO userDAO;
+
     @Autowired
-    public OrderServiceImpl(OrderDAO orderDAO, DishDAO dishDAO) {
+    public OrderServiceImpl(OrderDAO orderDAO, DishDAO dishDAO, UserDAO userDAO) {
         this.orderDAO = orderDAO;
         this.dishDAO = dishDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
-    public List<Dish> getDishesList(Order order) {
-        if (order == null) return new ArrayList<>();
-        else
-            return order.getDishList();
+    @Transactional
+    public List<Dish> getDishesList(final Order order) {
+        List<Dish> dishes = dishDAO.findAll();
+        dishes.removeIf(dish -> dish.getOrder() == null);
+        dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
+        return dishes;
     }
 
     @Override
     public void addDishToOrder(int dishID, Order order) {
-        //NPE !!!!!!!!!!!!!!!
-        List<Dish> list = order.getDishList();
-        if (list == null)
-            list = new ArrayList<>();
-        list.add(dishDAO.getOne(dishID));
-        order.setDishList(list);
+        Dish dishToAdd = dishDAO.getOne(dishID);
+        dishToAdd.setOrder(order);
+        List<Dish> dishes = dishDAO.findAll();
+        dishes.removeIf(dish -> dish.getOrder() == null);
+        dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
+        dishes.add(dishToAdd);
+        order.setDishList(dishes);
+    }
+
+    @Override
+    @Transactional
+    public void addOrderToUser(User user) {
+        if (user.getOrder() == null) {
+            Order order = new Order();
+            order.setUser(user);
+            user.setOrder(order);
+            orderDAO.saveAndFlush(order);
+        }
     }
 }

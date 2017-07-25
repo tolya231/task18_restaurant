@@ -41,8 +41,9 @@ public class ClientController {
     @Transactional
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
-        model.addAttribute("getAllDishes", dishService.getAllDishes());
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        orderService.addOrderToUser(userService.findByUsername(name));
+        model.addAttribute("getAllDishes", dishService.getAllDishes());
         model.addAttribute("orderList", orderService.getDishesList(userService.getOrderByUsername(name)));
 
         return "welcome";
