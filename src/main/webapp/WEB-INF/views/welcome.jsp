@@ -22,56 +22,63 @@
         <form id="logoutForm" method="post" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-        <h2><p>Welcome</p> ${pageContext.request.userPrincipal.name} | <a
+        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a
                 onclick="document.forms['logoutForm'].submit()" style="color: green">Logout </a>
         </h2>
     </c:if>
 
-<c:if test="${isAdmin}">
-    <a href="${pageContext.request.contextPath}/admin">Go to admin page</a>
-</c:if>
+    <c:if test="${isAdmin}">
+        <a href="${pageContext.request.contextPath}/admin">Go to admin page</a>
+    </c:if>
 
-<h1>Dish List</h1>
+    <p>Menu</p>
 
-<c:if test="${!empty getAllDishes}">
-    <table>
-        <tr>
-            <th width="100" align="center">Dish</th>
-            <th width="100" align="center">Price</th>
-            <th width="100" align="center">Make order</th>
-        </tr>
-        <c:forEach items="${getAllDishes}" var="dish">
+    <c:if test="${!empty getAllDishes}">
+        <table>
             <tr>
-                <td width="100" align="center">${dish.name}</td>
-                <td width="100" align="center">${dish.price}</td>
-                <td width="100" align="center"><a href="<c:url value='/add/${dish.id}'/>">order</a></td>
+                <th width="100" align="center">Dish</th>
+                <th width="100" align="center">Price</th>
+                <th width="100" align="center">Make order</th>
             </tr>
-        </c:forEach>
-    </table>
-</c:if>
+            <c:forEach items="${getAllDishes}" var="dish">
+                <tr>
+                    <td width="100" align="center">${dish.name}</td>
+                    <td width="100" align="center">${dish.price}</td>
+                    <td width="100" align="center"><a href="<c:url value='/add/${dish.id}'/>">order</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
 
-<h1>Order List</h1>
+    <p>Order</p>
 
-<c:if test="${!empty orderList}">
-    <table>
-        <tr>
-            <th width="100" align="center">Dish</th>
-            <th width="100" align="center">Price</th>
-        </tr>
-        <c:forEach items="${orderList}" var="dish">
+    <c:if test="${!empty orderList}">
+        <table>
             <tr>
-                <td width="100" align="center">${dish.name}</td>
-                <td width="100" align="center">${dish.price}</td>
+                <th width="100" align="center">Dish</th>
+                <th width="100" align="center">Price</th>
+                <th width="100" align="center">Delete</th>
             </tr>
-        </c:forEach>
-    </table>
-</c:if>
+            <c:forEach items="${orderList}" var="dish">
+                <tr>
+                    <td width="100" align="center">${dish.name}</td>
+                    <td width="100" align="center">${dish.price}</td>
+                    <td width="100" align="center"><a href="/remove/${dish.id}">Cancel</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
+    <p></p>
+
     <c:url var="addAction" value="/welcome/make"/>
     <form:form action="${addAction}">
         <c:if test="${!empty orderList}">
             <input type="submit" value="Make order"/>
         </c:if>
+        <label>Price: ${getPrice}</label>
     </form:form>
+
+    <p></p>
     <p>Don't forget to pay the order. Please wait for the bill.</p>
 
 </div>

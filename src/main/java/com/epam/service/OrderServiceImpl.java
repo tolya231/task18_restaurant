@@ -42,10 +42,21 @@ public class OrderServiceImpl implements OrderService {
         Dish dishToAdd = dishDAO.getOne(dishID);
         dishToAdd.setOrder(order);
         List<Dish> dishes = dishDAO.findAll();
-        dishes.removeIf(dish -> dish.getOrder() == null);
-        dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
+        dishes = order.getDishList();
+        //dishes.removeIf(dish -> dish.getOrder() == null);
+        //dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
         dishes.add(dishToAdd);
         order.setDishList(dishes);
+    }
+
+    @Override
+    public int getPrice(Order order) {
+        List<Dish> dishes = order.getDishList();
+        int price = 0;
+        for (Dish dish : dishes) {
+            price += dish.getPrice();
+        }
+        return price;
     }
 
     @Override

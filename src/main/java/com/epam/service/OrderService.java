@@ -12,4 +12,6 @@ public interface OrderService {
     void addDishToOrder(int dishID, Order order);
 
     void addOrderToUser(User user);
+
+    int getPrice(Order order);
 }

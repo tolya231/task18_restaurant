@@ -1,5 +1,6 @@
 package com.epam.controller;
 
+import com.epam.model.Order;
 import com.epam.model.User;
 import com.epam.service.DishService;
 import com.epam.service.OrderService;
@@ -32,7 +33,7 @@ public class ClientController {
 
     @Transactional
     @RequestMapping("/add/{id}")
-    public String removeHotel(Model model, @PathVariable("id") int id) {
+    public String addDish(Model model, @PathVariable("id") int id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         orderService.addDishToOrder(id, userService.getOrderByUsername(name));
@@ -45,16 +46,27 @@ public class ClientController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
         orderService.addOrderToUser(user);
+        Order order = userService.getOrderByUsername(name);
+        model.addAttribute("getPrice", orderService.getPrice(order));
         model.addAttribute("isAdmin", userService.isAdmin(user));
         model.addAttribute("getAllDishes", dishService.getAllDishes());
-        model.addAttribute("orderList", orderService.getDishesList(userService.getOrderByUsername(name)));
+        model.addAttribute("orderList", orderService.getDishesList(order));
         return "welcome";
+    }
+
+    @RequestMapping("/remove/{dishId}")
+    @Transactional
+    public String removeOrderedDish(Model model, @PathVariable("dishId") int id)  {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(name);
+        Order order = user.getOrder();
+        dishService.removeDish(id, order);
+        return "redirect:/welcome";
     }
 
     @RequestMapping(value = "/welcome/make", method = RequestMethod.POST)
     @Transactional
-    public String addHotel() {
-
+    public String makeOrder() {
         return "redirect:/welcome";
     }
 }
