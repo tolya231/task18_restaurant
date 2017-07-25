@@ -51,4 +51,10 @@ public class ClientController {
         return "welcome";
     }
 
+    @RequestMapping(value = "/welcome/make", method = RequestMethod.POST)
+    @Transactional
+    public String addHotel() {
+
+        return "redirect:/welcome";
+    }
 }

@@ -66,8 +66,13 @@
         </c:forEach>
     </table>
 </c:if>
-
-<p>Don't forget to pay the order. Please wait for the bill.</p>
+    <c:url var="addAction" value="/welcome/make"/>
+    <form:form action="${addAction}">
+        <c:if test="${!empty orderList}">
+            <input type="submit" value="Make order"/>
+        </c:if>
+    </form:form>
+    <p>Don't forget to pay the order. Please wait for the bill.</p>
 
 </div>
 </body>
