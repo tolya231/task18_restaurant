@@ -78,6 +78,7 @@
                 <c:if test="${!empty orderList}">
                     <input type="submit" value="Make order"/>
                 </c:if>
+                <label>Price: ${getPrice}</label>
             </form:form>
         </c:when>
         <c:otherwise> <label>Wait! Price: ${getPrice}</label> </c:otherwise>

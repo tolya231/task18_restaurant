@@ -1,6 +1,5 @@
 package com.epam.service;
 
-import com.epam.dao.DishDAO;
 import com.epam.dao.OrderDAO;
 import com.epam.dao.RoleDAO;
 import com.epam.dao.UserDAO;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,15 +24,13 @@ public class UserServiceImpl implements UserService {
 
     private final OrderDAO orderDAO;
 
-    private final DishDAO dishDAO;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, OrderDAO orderDAO, BCryptPasswordEncoder bCryptPasswordEncoder, DishDAO dishDAO) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, OrderDAO orderDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.orderDAO = orderDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.dishDAO = dishDAO;
     }
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,6 +42,16 @@ public class UserServiceImpl implements UserService {
         roles.add(roleDAO.getOne(2));
         user.setRoles(roles);
         userDAO.save(user);
+    }
+
+    @Override
+    public void removeUser(Integer id) {
+        userDAO.delete(id);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userDAO.findAll();
     }
 
     @Override
@@ -79,6 +87,15 @@ public class UserServiceImpl implements UserService {
         orderDAO.saveAndFlush(order);
     }
 
+    @Transactional
+    @Override
+    public void makeAdmin(int userId) {
+        User user = userDAO.getOne(userId);
+        Set<Role> roles = user.getRoles();
+        roles.add(roleDAO.findOne(1));
+        userDAO.saveAndFlush(user);
+    }
+
     /*@Override
     public String getRoleByUsername(String username) {
         User user = userDAO.findByUsername(username);
@@ -88,6 +105,7 @@ public class UserServiceImpl implements UserService {
             return "ROLE_CLIENT";
 
     }*/
+
 
     private boolean hasRoleAdmin(Set<Role> roles) {
         for (Role role : roles) {

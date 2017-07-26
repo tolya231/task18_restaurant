@@ -3,13 +3,15 @@ package com.epam.service;
 import com.epam.model.Order;
 import com.epam.model.User;
 
+import java.util.List;
+
 public interface UserService {
 
     void save(User user);
 
-    //void removeUser(Integer id);
+    void removeUser(Integer id);
 
-    //List<User> getAllUsers();
+    List<User> getAllUsers();
 
     Order getOrderByUsername(String username);
 
@@ -18,5 +20,6 @@ public interface UserService {
     boolean isAdmin(User user);
 
     void makeOrder(String username);
-    //String getRoleByUsername(String username);
+
+    void makeAdmin(int userId);
 }

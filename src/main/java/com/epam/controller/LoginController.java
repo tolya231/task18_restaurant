@@ -50,7 +50,7 @@ public class LoginController {
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
 
         orderService.addOrderToUser(userForm);
-        return "redirect:/welcome"/* + userForm.getUsername()*/;
+        return "redirect:/welcome";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -65,10 +65,5 @@ public class LoginController {
         return "login";
     }
 
-
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Model model) {
-        return "admin";
-    }
 
 }

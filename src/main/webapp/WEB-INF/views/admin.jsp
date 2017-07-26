@@ -22,13 +22,20 @@
         <form id="logoutForm" method="post" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-        <h2><p>Admin Page</p> ${pageContext.request.userPrincipal.name} | <a
+        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a
                 onclick="document.forms['logoutForm'].submit()" style="color: green">Logout </a>
         </h2>
     </c:if>
 
-<a href="${pageContext.request.contextPath}/welcome">Go to client page</a>
-
+    <a href="${pageContext.request.contextPath}/welcome">Go to client page</a>
+    <p></p>
+    <form:form action="/admin/seeUsers">
+        <input type="submit" value="See users">
+    </form:form>
+    <br/>
+    <form:form action="/admin/seeOrders">
+        <input type="submit" value="See orders">
+    </form:form>
 
 </div>
 </body>
