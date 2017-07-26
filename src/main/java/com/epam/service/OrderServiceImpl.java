@@ -50,15 +50,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int getPrice(User user) {
-        List<Order> orders = orderDAO.findAll();
-        orders.removeIf(order -> !(order.getUser().getId() == user.getId()));
-        //orders.removeIf(order -> !(Objects.equals(order.getStatus(), "ACCEPTED")));
+        return cost(user.getOrder());
+    }
+
+    @Override
+    public int getPrice(int id) {
+        return cost(orderDAO.getOne(id));
+    }
+
+    private int cost(Order order) {
         int price = 0;
-        for (Order order : orders) {
             for (Dish dish : order.getDishList()) {
                 price += dish.getPrice();
             }
-        }
         return price;
     }
 
@@ -84,12 +88,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAcceptedOrders() {
+        List<Order> orders = orderDAO.findAll();
+        orders.removeIf(order -> !(order.getStatus().equals("IN_PROGRESS")));
+        return orders;
+    }
+
+    @Override
     @Transactional
     public void addOrderToUser(User user) {
         Order order = new Order();
         order.setUser(user);
         order.setStatus("NOT_ORDERED");
         user.setOrder(order);
+        orderDAO.saveAndFlush(order);
+    }
+
+    @Override
+    public void acceptOrder(int orderId) {
+        Order order = orderDAO.getOne(orderId);
+        order.setStatus("ACCEPTED");
         orderDAO.saveAndFlush(order);
     }
 }

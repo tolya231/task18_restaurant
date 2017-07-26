@@ -15,7 +15,13 @@ public interface OrderService {
 
     int getPrice(User user);
 
+    int getPrice(int orderId);
+
     String getStatus(Order order);
 
     void payOrder(String username);
+
+    List<Order> getAcceptedOrders();
+
+    void acceptOrder(int orderId);
 }

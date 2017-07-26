@@ -52,15 +52,31 @@ public class AdminController {
         return "users";
     }
 
+    @Transactional
+    @RequestMapping(value = "orders", method = RequestMethod.GET)
+    public String getOrders(Model model) {
+        model.addAttribute("getAcceptedOrders", orderService.getAcceptedOrders());
+        return "orders";
+    }
+
+    @Transactional
     @RequestMapping(value = "/delete/{userId}")
     public String removeUser(Model model, @PathVariable("userId") int id) {
         userService.removeUser(id);
         return "redirect:/users/";
     }
 
+    @Transactional
     @RequestMapping(value = "/makeAdmin/{userId}")
     public String makeAdmin(Model model, @PathVariable("userId") int id) {
         userService.makeAdmin(id);
         return "redirect:/users/";
+    }
+
+    @Transactional
+    @RequestMapping(value = "/accept/{orderId}")
+    public String seeOrders(Model model, @PathVariable("orderId") int id) {
+        orderService.acceptOrder(id);
+        return "redirect:/orders/";
     }
 }
