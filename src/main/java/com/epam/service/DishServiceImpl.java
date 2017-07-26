@@ -1,6 +1,8 @@
 package com.epam.service;
 
 import com.epam.dao.DishDAO;
+import com.epam.dao.OrderDAO;
+import com.epam.dao.UserDAO;
 import com.epam.model.Dish;
 import com.epam.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,15 @@ public class DishServiceImpl implements DishService {
 
     private final DishDAO dishDAO;
 
+    private final OrderDAO orderDAO;
+
+    private final UserDAO userDAO;
+
     @Autowired
-    public DishServiceImpl(DishDAO dishDAO) {
+    public DishServiceImpl(DishDAO dishDAO, OrderDAO orderDAO, UserDAO userDAO) {
         this.dishDAO = dishDAO;
+        this.orderDAO = orderDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -24,12 +32,17 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public void removeDish(int id, Order order) {
-        List<Dish> dishes = order.getDishList();
+    public void removeDish(int id, String username) {
+        Order order = userDAO.findByUsername(username).getOrder();
         Dish dish = dishDAO.getOne(id);
+        List<Dish> dishes = order.getDishList();
+
         dishes.remove(dish);
         order.setDishList(dishes);
         dish.setOrder(null);
+
+        dishDAO.saveAndFlush(dish);
+        orderDAO.saveAndFlush(order);
     }
 
 

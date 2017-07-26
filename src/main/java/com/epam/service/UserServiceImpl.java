@@ -1,5 +1,6 @@
 package com.epam.service;
 
+import com.epam.dao.DishDAO;
 import com.epam.dao.OrderDAO;
 import com.epam.dao.RoleDAO;
 import com.epam.dao.UserDAO;
@@ -9,6 +10,7 @@ import com.epam.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,12 +24,15 @@ public class UserServiceImpl implements UserService {
 
     private final OrderDAO orderDAO;
 
+    private final DishDAO dishDAO;
+
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, OrderDAO orderDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, OrderDAO orderDAO, BCryptPasswordEncoder bCryptPasswordEncoder, DishDAO dishDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.orderDAO = orderDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.dishDAO = dishDAO;
     }
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -55,6 +60,23 @@ public class UserServiceImpl implements UserService {
     public boolean isAdmin(User user) {
         Set<Role> roles = user.getRoles();
         return hasRoleAdmin(roles);
+    }
+
+    @Override
+    @Transactional
+    public void makeOrder(String username) {
+        User user = userDAO.findByUsername(username);
+        Order order = user.getOrder();
+        order.setStatus("IN_PROGRESS");
+        /*order.setDishList(null);
+        List<Dish> dishes = dishDAO.findAll();
+        for (Dish dish : dishes) {
+            if (dish.getOrder() != null && dish.getOrder().getId() == order.getId()) {
+                dish.setOrder(null);
+                dishDAO.saveAndFlush(dish);
+            }
+        }*/
+        orderDAO.saveAndFlush(order);
     }
 
     /*@Override

@@ -2,6 +2,7 @@ package com.epam.controller;
 
 import com.epam.Validator.UserValidator;
 import com.epam.model.User;
+import com.epam.service.OrderService;
 import com.epam.service.SecurityService;
 import com.epam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class LoginController {
 
     private final UserValidator userValidator;
 
+    private final OrderService orderService;
+
     @Autowired
-    public LoginController(UserService userService, SecurityService securityService, UserValidator userValidator) {
+    public LoginController(UserService userService, SecurityService securityService, UserValidator userValidator, OrderService orderService) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
+        this.orderService = orderService;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -44,6 +48,8 @@ public class LoginController {
         }
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
+
+        orderService.addOrderToUser(userForm);
         return "redirect:/welcome"/* + userForm.getUsername()*/;
     }
 
@@ -56,7 +62,6 @@ public class LoginController {
         if (logout != null) {
             model.addAttribute("message", "Logged out successfully.");
         }
-
         return "login";
     }
 

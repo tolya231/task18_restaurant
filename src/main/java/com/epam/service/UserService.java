@@ -16,5 +16,7 @@ public interface UserService {
     User findByUsername(String username);
 
     boolean isAdmin(User user);
+
+    void makeOrder(String username);
     //String getRoleByUsername(String username);
 }

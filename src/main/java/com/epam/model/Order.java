@@ -11,11 +11,15 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "order")
     private List<Dish> dishList;
+
+    @Column(name = "status")
+    private String status;
 
     public int getId() {
         return id;
@@ -39,5 +43,13 @@ public class Order {
 
     public void setDishList(List<Dish> dishList) {
         this.dishList = dishList;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

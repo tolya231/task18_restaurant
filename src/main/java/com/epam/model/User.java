@@ -20,8 +20,7 @@ public class User {
     @Transient
     private String confirmPassword;
 
-    @OneToOne
-    @JoinColumn(name = "orders_id")
+    @OneToOne(mappedBy = "user")
     private Order order;
 
     @ManyToMany

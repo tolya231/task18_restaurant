@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -70,17 +71,27 @@
     </c:if>
     <p></p>
 
-    <c:url var="addAction" value="/welcome/make"/>
-    <form:form action="${addAction}">
-        <c:if test="${!empty orderList}">
-            <input type="submit" value="Make order"/>
-        </c:if>
-        <label>Price: ${getPrice}</label>
-    </form:form>
-
+    <c:choose>
+        <c:when test="${getStatus eq 'NOT_ORDERED'}">
+            <c:url var="addAction" value="/welcome/make"/>
+            <form:form action="${addAction}">
+                <c:if test="${!empty orderList}">
+                    <input type="submit" value="Make order"/>
+                </c:if>
+            </form:form>
+        </c:when>
+        <c:otherwise> <label>Wait! Price: ${getPrice}</label> </c:otherwise>
+    </c:choose>
     <p></p>
+    <%--<p style="color: red">Status: ${getStatus}</p>--%>
     <p>Don't forget to pay the order. Please wait for the bill.</p>
 
+    <form:form action="/welcome/pay">
+        <c:if test="${getStatus eq 'ACCEPTED'}">
+            <label>Price: ${getPrice}</label>
+            <input type="submit" value="PAY">
+        </c:if>
+    </form:form>
 </div>
 </body>
 </html>

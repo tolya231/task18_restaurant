@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public List<Dish> getDishesList(final Order order) {
+    public List<Dish> getDishesList(Order order) {
         List<Dish> dishes = dishDAO.findAll();
         dishes.removeIf(dish -> dish.getOrder() == null);
         dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
@@ -38,35 +38,58 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void addDishToOrder(int dishID, Order order) {
         Dish dishToAdd = dishDAO.getOne(dishID);
         dishToAdd.setOrder(order);
-        List<Dish> dishes = dishDAO.findAll();
-        dishes = order.getDishList();
-        //dishes.removeIf(dish -> dish.getOrder() == null);
-        //dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
+        List<Dish> dishes = order.getDishList();
         dishes.add(dishToAdd);
-        order.setDishList(dishes);
+        orderDAO.saveAndFlush(order);
+        dishDAO.saveAndFlush(dishToAdd);
     }
 
     @Override
-    public int getPrice(Order order) {
-        List<Dish> dishes = order.getDishList();
+    public int getPrice(User user) {
+        List<Order> orders = orderDAO.findAll();
+        orders.removeIf(order -> !(order.getUser().getId() == user.getId()));
+        //orders.removeIf(order -> !(Objects.equals(order.getStatus(), "ACCEPTED")));
         int price = 0;
-        for (Dish dish : dishes) {
-            price += dish.getPrice();
+        for (Order order : orders) {
+            for (Dish dish : order.getDishList()) {
+                price += dish.getPrice();
+            }
         }
         return price;
     }
 
     @Override
+    public String getStatus(Order order) {
+        return order.getStatus();
+    }
+
+    @Override
+    public void payOrder(String username) {
+        User user = userDAO.findByUsername(username);
+        Order order = user.getOrder();
+        order.setStatus("NOT_ORDERED");
+        order.setDishList(null);
+        List<Dish> dishes = dishDAO.findAll();
+        for (Dish dish : dishes) {
+            if (dish.getOrder() != null && dish.getOrder().getId() == order.getId()) {
+                dish.setOrder(null);
+                dishDAO.saveAndFlush(dish);
+            }
+        }
+        orderDAO.saveAndFlush(order);
+    }
+
+    @Override
     @Transactional
     public void addOrderToUser(User user) {
-        if (user.getOrder() == null) {
-            Order order = new Order();
-            order.setUser(user);
-            user.setOrder(order);
-            orderDAO.saveAndFlush(order);
-        }
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus("NOT_ORDERED");
+        user.setOrder(order);
+        orderDAO.saveAndFlush(order);
     }
 }

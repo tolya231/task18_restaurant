@@ -6,10 +6,6 @@
     cursor: pointer;
 }
 
-.container {
-    border: 2px solid #06ffae;
-}
-
 #logout:hover {
     cursor: pointer;
 }

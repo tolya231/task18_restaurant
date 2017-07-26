@@ -45,9 +45,9 @@ public class ClientController {
     public String welcome(Model model) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
-        orderService.addOrderToUser(user);
         Order order = userService.getOrderByUsername(name);
-        model.addAttribute("getPrice", orderService.getPrice(order));
+        model.addAttribute("getStatus", orderService.getStatus(order));
+        model.addAttribute("getPrice", orderService.getPrice(user));
         model.addAttribute("isAdmin", userService.isAdmin(user));
         model.addAttribute("getAllDishes", dishService.getAllDishes());
         model.addAttribute("orderList", orderService.getDishesList(order));
@@ -59,14 +59,29 @@ public class ClientController {
     public String removeOrderedDish(Model model, @PathVariable("dishId") int id)  {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
-        Order order = user.getOrder();
-        dishService.removeDish(id, order);
+        dishService.removeDish(id, name);
         return "redirect:/welcome";
     }
 
     @RequestMapping(value = "/welcome/make", method = RequestMethod.POST)
     @Transactional
     public String makeOrder() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.makeOrder(name);
         return "redirect:/welcome";
+    }
+
+    @RequestMapping(value = "/welcome/pay", method = RequestMethod.POST)
+    @Transactional
+    public String payOrder() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        orderService.payOrder(name);
+        return "redirect:/bye";
+    }
+
+    @RequestMapping(value = "/bye", method = RequestMethod.GET)
+    @Transactional
+    public String bye() {
+        return "bye";
     }
 }
