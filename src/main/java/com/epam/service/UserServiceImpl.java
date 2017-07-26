@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleDAO.getOne(2));
         user.setRoles(roles);
+        user.setMoney(1000);
         userDAO.save(user);
     }
 
@@ -94,6 +95,11 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = user.getRoles();
         roles.add(roleDAO.findOne(1));
         userDAO.saveAndFlush(user);
+    }
+
+    @Override
+    public int getMoney(User user) {
+        return user.getMoney();
     }
 
     /*@Override

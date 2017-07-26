@@ -20,6 +20,9 @@ public class User {
     @Transient
     private String confirmPassword;
 
+    @Column(name = "money")
+    private int money;
+
     @OneToOne(mappedBy = "user")
     private Order order;
 
@@ -74,5 +77,13 @@ public class User {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

@@ -31,7 +31,9 @@
     <c:if test="${isAdmin}">
         <a href="${pageContext.request.contextPath}/admin">Go to admin page</a>
     </c:if>
-
+    <p>
+        <label>Your money: ${getMoney}</label>
+    </p>
     <p>Menu</p>
 
     <c:if test="${!empty getAllDishes}">

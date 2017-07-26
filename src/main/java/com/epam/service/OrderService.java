@@ -15,7 +15,6 @@ public interface OrderService {
 
     int getPrice(User user);
 
-    int getPrice(int orderId);
 
     String getStatus(Order order);
 

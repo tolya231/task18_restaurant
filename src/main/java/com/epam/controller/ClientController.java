@@ -51,12 +51,13 @@ public class ClientController {
         model.addAttribute("isAdmin", userService.isAdmin(user));
         model.addAttribute("getAllDishes", dishService.getAllDishes());
         model.addAttribute("orderList", orderService.getDishesList(order));
+        model.addAttribute("getMoney", userService.getMoney(user));
         return "welcome";
     }
 
     @RequestMapping("/remove/{dishId}")
     @Transactional
-    public String removeOrderedDish(Model model, @PathVariable("dishId") int id)  {
+    public String removeOrderedDish(Model model, @PathVariable("dishId") int id) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
         dishService.removeDish(id, name);
@@ -75,13 +76,23 @@ public class ClientController {
     @Transactional
     public String payOrder() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(name);
         orderService.payOrder(name);
-        return "redirect:/bye";
+        if (userService.getMoney(user) >= orderService.getPrice(user))
+            return "redirect:/bye";
+        else
+            return "redirect:/slave";
     }
 
     @RequestMapping(value = "/bye", method = RequestMethod.GET)
     @Transactional
     public String bye() {
         return "bye";
+    }
+
+    @RequestMapping(value = "/slave", method = RequestMethod.GET)
+    @Transactional
+    public String slave() {
+        return "slave";
     }
 }

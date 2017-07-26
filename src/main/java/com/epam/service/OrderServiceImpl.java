@@ -53,17 +53,17 @@ public class OrderServiceImpl implements OrderService {
         return cost(user.getOrder());
     }
 
-    @Override
-    public int getPrice(int id) {
-        return cost(orderDAO.getOne(id));
-    }
 
     private int cost(Order order) {
-        int price = 0;
+        if (order.getDishList() == null)
+            return 0;
+        else {
+            int price = 0;
             for (Dish dish : order.getDishList()) {
                 price += dish.getPrice();
             }
-        return price;
+            return price;
+        }
     }
 
     @Override
@@ -75,6 +75,7 @@ public class OrderServiceImpl implements OrderService {
     public void payOrder(String username) {
         User user = userDAO.findByUsername(username);
         Order order = user.getOrder();
+        user.setMoney(user.getMoney() - cost(order));
         order.setStatus("NOT_ORDERED");
         order.setDishList(null);
         List<Dish> dishes = dishDAO.findAll();
@@ -84,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
                 dishDAO.saveAndFlush(dish);
             }
         }
+        userDAO.saveAndFlush(user);
         orderDAO.saveAndFlush(order);
     }
 

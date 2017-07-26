@@ -22,4 +22,6 @@ public interface UserService {
     void makeOrder(String username);
 
     void makeAdmin(int userId);
+
+    int getMoney(User user);
 }
