@@ -78,9 +78,15 @@
             <c:url var="addAction" value="/welcome/make"/>
             <form:form action="${addAction}">
                 <c:if test="${!empty orderList}">
-                    <input type="submit" value="Make order"/>
+                    <c:if test="${canPay}">
+                        <input type="submit" value="Make order"/>
+                        <label>Price: ${getPrice}</label>
+                    </c:if>
+                    <c:if test="${!canPay}">
+                        <p>You don't have enough money</p>
+                        <label>Price: ${getPrice}</label>
+                    </c:if>
                 </c:if>
-                <label>Price: ${getPrice}</label>
             </form:form>
         </c:when>
         <c:otherwise> <label>Wait! Price: ${getPrice}</label> </c:otherwise>

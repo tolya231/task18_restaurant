@@ -25,4 +25,6 @@ public interface OrderService {
     void acceptOrder(int orderId);
 
     int getOrderIdByUsername(String name);
+
+    boolean canPay(User user);
 }

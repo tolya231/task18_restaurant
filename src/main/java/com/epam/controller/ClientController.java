@@ -56,6 +56,7 @@ public class ClientController {
         model.addAttribute("getAllDishes", dishService.getAllDishes());
         model.addAttribute("orderList", orderService.getDishesList(order));
         model.addAttribute("getMoney", userService.getMoney(user));
+        model.addAttribute("canPay", orderService.canPay(user));
         return "welcome";
     }
 
@@ -85,21 +86,12 @@ public class ClientController {
         User user = userService.findByUsername(name);
         orderService.payOrder(name);
         logger.info("пользователь " + name + " оплатил заказ с id=" + orderService.getOrderIdByUsername(name));
-        if (userService.getMoney(user) >= orderService.getPrice(user))
             return "redirect:/bye";
-        else
-            return "redirect:/slave";
     }
 
     @RequestMapping(value = "/bye", method = RequestMethod.GET)
     @Transactional
     public String bye() {
         return "bye";
-    }
-
-    @RequestMapping(value = "/slave", method = RequestMethod.GET)
-    @Transactional
-    public String slave() {
-        return "slave";
     }
 }

@@ -26,4 +26,5 @@ public interface UserService {
     int getMoney(User user);
 
     String getNameById(int userId);
+
 }

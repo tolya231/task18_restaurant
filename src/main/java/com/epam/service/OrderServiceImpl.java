@@ -117,4 +117,10 @@ public class OrderServiceImpl implements OrderService {
     public int getOrderIdByUsername(String name) {
         return userDAO.findByUsername(name).getOrder().getId();
     }
+
+    @Override
+    public boolean canPay(User user) {
+        Order order = user.getOrder();
+        return user.getMoney() >= cost(order);
+    }
 }
