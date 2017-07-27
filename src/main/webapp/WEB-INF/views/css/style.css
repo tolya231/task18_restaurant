@@ -14,6 +14,15 @@
     cursor: pointer;
 }
 
+a:link, a:visited {
+    /*background-color: #f44336;*/
+    color: #ff0000;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
 table {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
     font-size: 14px;
