@@ -23,4 +23,6 @@ public interface OrderService {
     List<Order> getAcceptedOrders();
 
     void acceptOrder(int orderId);
+
+    int getOrderIdByUsername(String name);
 }

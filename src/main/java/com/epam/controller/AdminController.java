@@ -4,12 +4,15 @@ import com.epam.service.DishService;
 import com.epam.service.OrderService;
 import com.epam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.apache.log4j.Logger;
 
 @Controller
 public class AdminController {
@@ -19,6 +22,8 @@ public class AdminController {
     private final DishService dishService;
 
     private final OrderService orderService;
+
+    Logger logger = Logger.getLogger(AdminController.class);
 
     @Autowired
     public AdminController(UserService userService, DishService dishService, OrderService orderService) {
@@ -63,6 +68,8 @@ public class AdminController {
     @RequestMapping(value = "/delete/{userId}")
     public String removeUser(Model model, @PathVariable("userId") int id) {
         userService.removeUser(id);
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("админ под именем " + name + " удалил пользователя" + userService.getNameById(id));
         return "redirect:/users/";
     }
 
@@ -70,6 +77,8 @@ public class AdminController {
     @RequestMapping(value = "/makeAdmin/{userId}")
     public String makeAdmin(Model model, @PathVariable("userId") int id) {
         userService.makeAdmin(id);
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("админ под именем " + name + " сделал пользователя" + userService.getNameById(id) + " админом");
         return "redirect:/users/";
     }
 
@@ -77,6 +86,8 @@ public class AdminController {
     @RequestMapping(value = "/accept/{orderId}")
     public String seeOrders(Model model, @PathVariable("orderId") int id) {
         orderService.acceptOrder(id);
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        logger.info("админом " + name + " подтвержден заказ клиента c id=" + id);
         return "redirect:/orders/";
     }
 }

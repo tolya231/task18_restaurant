@@ -5,6 +5,7 @@ import com.epam.model.User;
 import com.epam.service.DishService;
 import com.epam.service.OrderService;
 import com.epam.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ public class ClientController {
 
     private final OrderService orderService;
 
+    Logger logger = Logger.getLogger(ClientController.class);
+
     @Autowired
     public ClientController(UserService userService, DishService dishService, OrderService orderService) {
         this.userService = userService;
@@ -37,6 +40,7 @@ public class ClientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         orderService.addDishToOrder(id, userService.getOrderByUsername(name));
+        logger.info("пользователь " + name + " добавил в заказ блюдо " + dishService.getNameById(id));
         return "redirect:/welcome";
     }
 
@@ -61,6 +65,7 @@ public class ClientController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
         dishService.removeDish(id, name);
+        logger.info("пользователь " + name + " удалил тз заказа блюдо " + dishService.getNameById(id));
         return "redirect:/welcome";
     }
 
@@ -69,6 +74,7 @@ public class ClientController {
     public String makeOrder() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.makeOrder(name);
+        logger.info("пользователь " + name + " сделал заказ с id=" + orderService.getOrderIdByUsername(name));
         return "redirect:/welcome";
     }
 
@@ -78,6 +84,7 @@ public class ClientController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(name);
         orderService.payOrder(name);
+        logger.info("пользователь " + name + " оплатил заказ с id=" + orderService.getOrderIdByUsername(name));
         if (userService.getMoney(user) >= orderService.getPrice(user))
             return "redirect:/bye";
         else

@@ -11,4 +11,6 @@ public interface DishService {
     void removeDish(int id, String username);
 
     Dish findById(int id);
+
+    String getNameById(int dishId);
 }

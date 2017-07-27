@@ -24,4 +24,6 @@ public interface UserService {
     void makeAdmin(int userId);
 
     int getMoney(User user);
+
+    String getNameById(int userId);
 }

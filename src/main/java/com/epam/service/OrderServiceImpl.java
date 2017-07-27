@@ -112,4 +112,9 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus("ACCEPTED");
         orderDAO.saveAndFlush(order);
     }
+
+    @Override
+    public int getOrderIdByUsername(String name) {
+        return userDAO.findByUsername(name).getOrder().getId();
+    }
 }

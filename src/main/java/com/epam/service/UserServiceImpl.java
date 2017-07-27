@@ -102,6 +102,11 @@ public class UserServiceImpl implements UserService {
         return user.getMoney();
     }
 
+    @Override
+    public String getNameById(int userId) {
+        return userDAO.getOne(userId).getUsername();
+    }
+
     /*@Override
     public String getRoleByUsername(String username) {
         User user = userDAO.findByUsername(username);

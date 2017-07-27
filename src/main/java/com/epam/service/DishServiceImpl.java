@@ -50,4 +50,9 @@ public class DishServiceImpl implements DishService {
     public Dish findById(int id) {
         return dishDAO.findOne(id);
     }
+
+    @Override
+    public String getNameById(int dishId) {
+        return dishDAO.getOne(dishId).getName();
+    }
 }

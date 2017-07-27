@@ -5,6 +5,7 @@ import com.epam.model.User;
 import com.epam.service.OrderService;
 import com.epam.service.SecurityService;
 import com.epam.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class LoginController {
     private final UserValidator userValidator;
 
     private final OrderService orderService;
+
+    Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired
     public LoginController(UserService userService, SecurityService securityService, UserValidator userValidator, OrderService orderService) {
@@ -50,6 +53,7 @@ public class LoginController {
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
 
         orderService.addOrderToUser(userForm);
+        logger.info("в систему добавлен новый клиент");
         return "redirect:/welcome";
     }
 
