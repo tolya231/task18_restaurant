@@ -2,6 +2,9 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
+    <style>
+        <%@include file='/WEB-INF/views/css/style.css' %>
+    </style>
     <title>Thank you</title>
 </head>
 <body>
