@@ -44,8 +44,8 @@ public class OrderServiceImpl implements OrderService {
         dishToAdd.setOrder(order);
         List<Dish> dishes = order.getDishList();
         dishes.add(dishToAdd);
-        orderDAO.saveAndFlush(order);
-        dishDAO.saveAndFlush(dishToAdd);
+        /*orderDAO.saveAndFlush(order);
+        dishDAO.saveAndFlush(dishToAdd);*/
     }
 
     @Override
@@ -82,11 +82,11 @@ public class OrderServiceImpl implements OrderService {
         for (Dish dish : dishes) {
             if (dish.getOrder() != null && dish.getOrder().getId() == order.getId()) {
                 dish.setOrder(null);
-                dishDAO.saveAndFlush(dish);
+                /*dishDAO.saveAndFlush(dish);*/
             }
         }
-        userDAO.saveAndFlush(user);
-        orderDAO.saveAndFlush(order);
+        /*userDAO.saveAndFlush(user);
+        orderDAO.saveAndFlush(order);*/
     }
 
     @Override
@@ -103,14 +103,14 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setStatus("NOT_ORDERED");
         user.setOrder(order);
-        orderDAO.saveAndFlush(order);
+        /*orderDAO.saveAndFlush(order);*/
     }
 
     @Override
     public void acceptOrder(int orderId) {
         Order order = orderDAO.getOne(orderId);
         order.setStatus("ACCEPTED");
-        orderDAO.saveAndFlush(order);
+        /*orderDAO.saveAndFlush(order);*/
     }
 
     @Override

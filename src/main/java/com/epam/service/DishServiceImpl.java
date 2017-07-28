@@ -41,8 +41,8 @@ public class DishServiceImpl implements DishService {
         order.setDishList(dishes);
         dish.setOrder(null);
 
-        dishDAO.saveAndFlush(dish);
-        orderDAO.saveAndFlush(order);
+        /*dishDAO.saveAndFlush(dish);
+        orderDAO.saveAndFlush(order);*/
     }
 
 

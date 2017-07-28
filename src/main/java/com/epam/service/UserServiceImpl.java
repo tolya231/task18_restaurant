@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 dishDAO.saveAndFlush(dish);
             }
         }*/
-        orderDAO.saveAndFlush(order);
+        /*orderDAO.saveAndFlush(order);*/
     }
 
     @Transactional
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getOne(userId);
         Set<Role> roles = user.getRoles();
         roles.add(roleDAO.findOne(1));
-        userDAO.saveAndFlush(user);
+        /*userDAO.saveAndFlush(user);*/
     }
 
     @Override
