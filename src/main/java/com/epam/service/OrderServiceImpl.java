@@ -6,6 +6,7 @@ import com.epam.dao.UserDAO;
 import com.epam.model.Dish;
 import com.epam.model.Order;
 import com.epam.model.User;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO;
 
     private final UserDAO userDAO;
+
+    private Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
     @Autowired
     public OrderServiceImpl(OrderDAO orderDAO, DishDAO dishDAO, UserDAO userDAO) {
@@ -73,17 +76,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void payOrder(String username) {
-        User user = userDAO.findByUsername(username);
-        Order order = user.getOrder();
-        user.setMoney(user.getMoney() - cost(order));
-        order.setStatus("NOT_ORDERED");
-        order.setDishList(null);
-        List<Dish> dishes = dishDAO.findAll();
-        for (Dish dish : dishes) {
-            if (dish.getOrder() != null && dish.getOrder().getId() == order.getId()) {
-                dish.setOrder(null);
+        try {
+            User user = userDAO.findByUsername(username);
+            Order order = user.getOrder();
+            user.setMoney(user.getMoney() - cost(order));
+            order.setStatus("NOT_ORDERED");
+            order.setDishList(null);
+            List<Dish> dishes = dishDAO.findAll();
+            for (Dish dish : dishes) {
+                if (dish.getOrder() != null && dish.getOrder().getId() == order.getId()) {
+                    dish.setOrder(null);
                 /*dishDAO.saveAndFlush(dish);*/
+                }
             }
+        } catch (Exception ex) {
+            logger.error("ошибка при оплате заказа");
         }
         /*userDAO.saveAndFlush(user);
         orderDAO.saveAndFlush(order);*/

@@ -23,7 +23,7 @@ public class AdminController {
 
     private final OrderService orderService;
 
-    Logger logger = Logger.getLogger(AdminController.class);
+    private Logger logger = Logger.getLogger(AdminController.class);
 
     @Autowired
     public AdminController(UserService userService, DishService dishService, OrderService orderService) {
