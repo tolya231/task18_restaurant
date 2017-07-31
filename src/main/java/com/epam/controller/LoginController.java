@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class LoginController {
 
+    private static final int WEAK_STRENGTH = 1;
+    private static final int FEAR_STRENGTH = 5;
+    private static final int STRONG_STRENGTH = 7;
+
     private final UserService userService;
 
     private final SecurityService securityService;
@@ -39,6 +43,21 @@ public class LoginController {
         model.addAttribute("userForm", new User());
         return "registration";
 
+    }
+
+    @RequestMapping(value = "/checkStrength", method = RequestMethod.GET, produces = { "text/html; charset=UTF-8" })
+    public @ResponseBody
+    String checkStrength(@RequestParam String password) {
+
+        if (password.length() >= WEAK_STRENGTH & password.length() < FEAR_STRENGTH) {
+            // добавить локализацию
+            return "Слабый";
+        } else if (password.length() >= FEAR_STRENGTH & password.length() < STRONG_STRENGTH) {
+            return "Средний";
+        } else if (password.length() >= STRONG_STRENGTH) {
+            return "Сильный";
+        }
+        return "";
     }
 
     @Transactional
