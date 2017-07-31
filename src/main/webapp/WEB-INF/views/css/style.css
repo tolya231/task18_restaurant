@@ -15,12 +15,15 @@
 }
 
 a:link, a:visited {
-    /*background-color: #f44336;*/
     color: #ff0000;
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+}
+
+label {
+    color: blue;
 }
 
 table {
@@ -44,10 +47,6 @@ th, td {
 
 th {
     color: red;
-}
-
-label {
-    color: blue;
 }
 
 td {
