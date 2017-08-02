@@ -34,15 +34,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public List<Dish> getDishesList(Order order) {
-        List<Dish> dishes = dishDAO.findAll();
-        dishes.removeIf(dish -> dish.getOrder() == null);
-        dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
-        return dishes;
+        try {
+            List<Dish> dishes = dishDAO.findAll();
+            dishes.removeIf(dish -> dish.getOrder() == null);
+            dishes.removeIf(dish -> !(dish.getOrder().getId() == order.getId()));
+            return dishes;
+        }  catch (Exception ex) {
+            logger.error("ошибка при получении списка блюд");
+            return null;
+        }
     }
 
     @Override
     @Transactional
     public void addDishToOrder(int dishID, Order order) {
+
         Dish dishToAdd = dishDAO.getOne(dishID);
         dishToAdd.setOrder(order);
         List<Dish> dishes = order.getDishList();
@@ -98,9 +104,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAcceptedOrders() {
-        List<Order> orders = orderDAO.findAll();
-        orders.removeIf(order -> !(order.getStatus().equals("IN_PROGRESS")));
-        return orders;
+        try {
+            List<Order> orders = orderDAO.findAll();
+            orders.removeIf(order -> !(order.getStatus().equals("IN_PROGRESS")));
+            return orders;
+        } catch (Exception ex) {
+            logger.error("ошибка при получении списка заказов пользователя");
+            return null;
+        }
     }
 
     @Override
@@ -115,8 +126,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void acceptOrder(int orderId) {
-        Order order = orderDAO.getOne(orderId);
-        order.setStatus("ACCEPTED");
+        try {
+            Order order = orderDAO.getOne(orderId);
+            order.setStatus("ACCEPTED");
+        } catch (Exception ex) {
+            logger.error("ошибка при подтверждении заказа");
+        }
         /*orderDAO.saveAndFlush(order);*/
     }
 

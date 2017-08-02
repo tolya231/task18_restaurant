@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "username")
     private String username;
@@ -21,7 +21,7 @@ public class User {
     private String confirmPassword;
 
     @Column(name = "money")
-    private int money;
+    private Integer money;
 
     @OneToOne(mappedBy = "user")
     private Order order;
